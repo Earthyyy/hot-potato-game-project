@@ -38,13 +38,13 @@ const server = http.createServer((req, res) => {
 ////////////////// WS LOGIC ///////////////////
 ///////////////////////////////////////////////
 
-// TODO: Create the WebSocket Server (ws) using the HTTP server
+// Create the WebSocket Server (ws) using the HTTP server
 const wsServer = new WebSocket.Server({server})
 
-// TODO: Define the websocket server 'connection' handler
+// Define the websocket server 'connection' handler
 wsServer.on('connection',(socket) => {
   console.log('A new client has joined the server');
-  // TODO: Define the socket 'message' handler
+  // Define the socket 'message' handler
   socket.on('message',(data) => {
     const {type,payload} = JSON.parse(data);
     
@@ -69,7 +69,7 @@ wsServer.on('connection',(socket) => {
 ////////////// HELPER FUNCTIONS ///////////////
 ///////////////////////////////////////////////
 
-// TODO: Implement the broadcast pattern
+// Implement the broadcast pattern
 function broadcast(data,socketToOmit) {
   wsServer.clients.forEach(connectedClient => {
     if (connectedClient.readyState === WebSocket.OPEN && connectedClient !== socketToOmit) {
@@ -82,7 +82,7 @@ function broadcast(data,socketToOmit) {
 function handleNewUser(socket) {
   // Until there are 4 players in the game....
   if (nextPlayerIndex < 4) {
-    // TODO: Send PLAYER_ASSIGNMENT to the socket with a clientPlayerIndex
+    // Send PLAYER_ASSIGNMENT to the socket with a clientPlayerIndex
     const message = {
       type: SERVER.MESSAGE.PLAYER_ASSIGNMENT,
       payload :  {
@@ -107,7 +107,7 @@ function handleNewUser(socket) {
   
   // If 4 players are already in the game...
   else {
-    // TODO: Send GAME_FULL to the socket
+    // Send GAME_FULL to the socket
     const message = {
       type: SERVER.MESSAGE.GAME_FULL
     }
@@ -119,7 +119,7 @@ function handleNewUser(socket) {
 
 
 function passThePotatoTo(newPotatoHolderIndex) {
-  // TODO: Broadcast a NEW_POTATO_HOLDER message with the newPotatoHolderIndex
+  // Broadcast a NEW_POTATO_HOLDER message with the newPotatoHolderIndex
   const data = {
     type: SERVER.BROADCAST.NEW_POTATO_HOLDER,
     payload: {
@@ -136,7 +136,7 @@ function startTimer() {
   // Start the clock ticking
   const interval = setInterval(() => {
     if (clockValue > 0) {
-      // TODO: broadcast 'COUNTDOWN' with the clockValue
+      // broadcast 'COUNTDOWN' with the clockValue
       const data = {
         type: SERVER.BROADCAST.COUNTDOWN,
         payload: {
@@ -153,7 +153,7 @@ function startTimer() {
       clearInterval(interval); // stop the timer
       nextPlayerIndex = 0; // reset the players index
       
-      // TODO: Broadcast 'GAME_OVER'
+      // Broadcast 'GAME_OVER'
       const data = {
         type: SERVER.BROADCAST.GAME_OVER
       }

@@ -60,20 +60,20 @@
         wsClient.close();
       }
 
-      // TODO: Create a new WebSocket connection with the server using the ws protocol
+      // Create a new WebSocket connection with the server using the ws protocol
       const URL = 'ws://localhost:' + PORT;
       wsClient = new WebSocket(URL);
 
-      // TODO: Define the .onopen() handler
+      // Define the .onopen() handler
       wsClient.onopen = () => {
         console.log('Connected to the WebSocket server!');
-        // TODO: Send the server a 'NEW_USER' message
+        // Send the server a 'NEW_USER' message
         const message = {
           type: CLIENT.MESSAGE.NEW_USER
         }
         wsClient.send(JSON.stringify(message));
       }
-      // TODO: Define the .onmessage() handler
+      // Define the .onmessage() handler
       wsClient.onmessage = (messageEvent) => {
         const {type,payload} = JSON.parse(messageEvent.data);
         // For each message type below, call the appropriate helper the proper value
@@ -123,7 +123,7 @@
       // set the potatoHolderIndex to be the player that was clicked on
       potatoHolderIndex = newPotatoHolderIndex;
       
-      // TODO: Send the server a 'PASS_POTATO' message with the newPotatoHolderIndex
+      // Send the server a 'PASS_POTATO' message with the newPotatoHolderIndex
       const data = {
         type: CLIENT.MESSAGE.PASS_POTATO,
         payload: {
