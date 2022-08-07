@@ -137,8 +137,13 @@ function startTimer() {
   const interval = setInterval(() => {
     if (clockValue > 0) {
       // TODO: broadcast 'COUNTDOWN' with the clockValue
-      
-
+      const data = {
+        type: SERVER.BROADCAST.COUNTDOWN,
+        payload: {
+          clockValue
+        }
+      }
+      broadcast(data);
       // decrement until the clockValue reaches 0
       clockValue--;
     }
@@ -149,6 +154,11 @@ function startTimer() {
       nextPlayerIndex = 0; // reset the players index
       
       // TODO: Broadcast 'GAME_OVER'
+      const data = {
+        type: SERVER.BROADCAST.GAME_OVER
+      }
+
+      broadcast(data);
    
     }
   }, 1000);

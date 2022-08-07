@@ -86,15 +86,22 @@
           case SERVER.MESSAGE.PLAYER_ASSIGNMENT:
             setPlayerIndex(payload.clientPlayerIndex);
             break;
+          // 'NEW_POTATO_HOLDER' => updateCurrentPotatoHolder(newPotatoHolderIndex)
           case SERVER.BROADCAST.NEW_POTATO_HOLDER:
             updateCurrentPotatoHolder(payload.newPotatoHolderIndex);
+            break;
+          // 'COUNTDOWN' => countDown(clockValue)
+          case SERVER.BROADCAST.COUNTDOWN:
+            console.log(payload.clockValue);
+            countDown(payload.clockValue);
+            break;
+          // 'GAME_OVER' => endGame()
+          case SERVER.BROADCAST.GAME_OVER:
+            endGame();
             break;
           default:
             break;
         }
-          // 'COUNTDOWN' => countDown(clockValue)
-          // 'NEW_POTATO_HOLDER' => updateCurrentPotatoHolder(newPotatoHolderIndex)
-          // 'GAME_OVER' => endGame()
       }
 
       // .onclose is executed when the socket connection is closed
