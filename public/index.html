@@ -66,17 +66,33 @@
 
       // TODO: Define the .onopen() handler
       wsClient.onopen = () => {
-        // TODO: Send the server a 'NEW_USER' message
         console.log('Connected to the WebSocket server!');
+        // TODO: Send the server a 'NEW_USER' message
+        const message = {
+          type: CLIENT.MESSAGE.NEW_USER
+        }
+        wsClient.send(JSON.stringify(message));
       }
       // TODO: Define the .onmessage() handler
+      wsClient.onmessage = (messageEvent) => {
+        const {type,payload} = JSON.parse(messageEvent.data);
         // For each message type below, call the appropriate helper the proper value
+        switch (type) {
           // 'GAME_FULL' => updateDisplay(displayText);
+          case SERVER.MESSAGE.GAME_FULL:
+            updateDisplay('GAME FULL');
+            break;
           // 'PLAYER_ASSIGNMENT' => setPlayerIndex(playerIndex)
+          case SERVER.MESSAGE.PLAYER_ASSIGNMENT:
+            setPlayerIndex(payload.clientPlayerIndex)
+            break;
+          default:
+            break;
+        }
           // 'COUNTDOWN' => countDown(clockValue)
           // 'NEW_POTATO_HOLDER' => updateCurrentPotatoHolder(newPotatoHolderIndex)
           // 'GAME_OVER' => endGame()
-      
+      }
 
       // .onclose is executed when the socket connection is closed
       wsClient.onclose = function() {
