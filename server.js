@@ -49,11 +49,13 @@ wsServer.on('connection',(socket) => {
     const {type,payload} = JSON.parse(data);
     
     switch (type) {
+      // 'NEW_USER' => handleNewUser(socket)
       case CLIENT.MESSAGE.NEW_USER:
         handleNewUser(socket);
         break;
+      // 'PASS_POTATO' => passThePotatoTo(newPotatoHolderIndex)
       case CLIENT.MESSAGE.PASS_POTATO:
-
+        passThePotatoTo(payload.newPotatoHolderIndex)
         break;
       default:
         break;
@@ -61,8 +63,6 @@ wsServer.on('connection',(socket) => {
 
 
   })
-  // 'NEW_USER' => handleNewUser(socket)
-  // 'PASS_POTATO' => passThePotatoTo(newPotatoHolderIndex)
 })
 
 ///////////////////////////////////////////////
@@ -70,7 +70,14 @@ wsServer.on('connection',(socket) => {
 ///////////////////////////////////////////////
 
 // TODO: Implement the broadcast pattern
-
+function broadcast(data,socketToOmit) {
+  wsServer.clients.forEach(connectedClient => {
+    if (connectedClient.readyState === WebSocket.OPEN && connectedClient !== socketToOmit) {
+      connectedClient.send(JSON.stringify(data));
+    }
+  })
+  
+}
 
 function handleNewUser(socket) {
   // Until there are 4 players in the game....
@@ -113,7 +120,13 @@ function handleNewUser(socket) {
 
 function passThePotatoTo(newPotatoHolderIndex) {
   // TODO: Broadcast a NEW_POTATO_HOLDER message with the newPotatoHolderIndex
-  
+  const data = {
+    type: SERVER.BROADCAST.NEW_POTATO_HOLDER,
+    payload: {
+      newPotatoHolderIndex
+    }
+  }
+  broadcast(data);
 }
 
 function startTimer() {
